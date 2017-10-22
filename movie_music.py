@@ -1,6 +1,9 @@
+import os
 import json
 import requests
 import urllib
+
+SPOTIFY_ACCESS_TOKEN = os.environ.get('SPOTIFY_ACCESS_TOKEN')
 
 genre_reponse = requests.get('https://api.themoviedb.org/3/genre/movie/list?api_key=eb90ad0ff308c0b16691816876d0f9f4')
 genre_text = json.loads(genre_reponse.text).get('genres')
@@ -27,7 +30,7 @@ def get_movie_soundtrack_popularity(movie):
 
 	# this spotify access token will expire.
 	headers = {
-		'Authorization': 'Bearer BQCs32Pkj7wyEKF6wWZMq6F8dJon5814D2IFaTZPoQ7Gdl2sYcCitDVgxTS0z9GW3CTZ2QPRBlnilqvur_UvTA'
+		'Authorization': 'Bearer {}'.format(SPOTIFY_ACCESS_TOKEN)
 	}
 	params = urllib.urlencode({'q': movie, 'type': 'album', 'limit': 1})
 
