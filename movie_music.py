@@ -5,11 +5,16 @@ import urllib
 
 
 SPOTIFY_ACCESS_TOKEN = os.environ.get('SPOTIFY_ACCESS_TOKEN')
+if not SPOTIFY_ACCESS_TOKEN:
+    raise Exception('Spotify Access Token not available as an environment variable. Please set it before continuing.')
+MOVIE_DB_KEY = os.environ.get('MOVIE_DB_KEY')
+if not MOVIE_DB_KEY:
+    raise Exception('Movie DB API key not available as an environment variable. Please set it before continuing.')
 
 
 def get_all_movie_titles_for_genre(genre_id):
     movie_res = requests.get(
-        'https://api.themoviedb.org/3/genre/{}/movies?api_key=eb90ad0ff308c0b16691816876d0f9f4'.format(genre_id)
+        'https://api.themoviedb.org/3/genre/{}/movies?api_key={}'.format(genre_id, MOVIE_DB_KEY)
     )
     movie_list = json.loads(movie_res.text).get('results')
     for movie in movie_list:
@@ -62,7 +67,7 @@ def get_movie_soundtrack_popularity_avg_by_genre(genre_id):
 def get_movie_music_popularity_scores():
     movie_music_list = []
     genre_reponse = requests.get(
-        'https://api.themoviedb.org/3/genre/movie/list?api_key=eb90ad0ff308c0b16691816876d0f9f4'
+        'https://api.themoviedb.org/3/genre/movie/list?api_key={}'.format(MOVIE_DB_KEY)
     )
     all_genre_list = json.loads(genre_reponse.text).get('genres')
     for genre_dict in all_genre_list:
